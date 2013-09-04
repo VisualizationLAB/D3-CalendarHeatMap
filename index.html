@@ -131,10 +131,10 @@ cell-padding: 10;
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-<link rel="stylesheet" href="style.css" />
+<!--link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /-->
+<!--script src="http://code.jquery.com/jquery-1.8.2.js"></script-->
+<!--script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script-->
+<!--link rel="stylesheet" href="style.css" /-->
 <script>
 
 	
@@ -518,7 +518,7 @@ d3.select(".C3")
 	.attr("valign" , "top");
 // ++++++++ Calendar section END
 
-$(function() {
+/*$(function() {
     $( "#slider-range" ).slider({
     range: true,
     min: 0,
@@ -529,7 +529,7 @@ $(function() {
     var minv = d3.max([ui.values[0], 0]);
     }});
     });
-
+*/
 function loadData () {
 
  queue()
@@ -1130,8 +1130,8 @@ function buildSummaryData () {
 						"Tot_Duration_Hrs" : d3.round(Summ_Load_hr,2),
 						"File_Layouts" : fileLayout.length,
 						"Error_Msgs" : errMsgs.length,
-						"Tot_days" : Summ_days,
-						"Tot_Err_days" :Summ_days_err,
+						"Tot_days" : Summ_days-1,
+						"Tot_Err_days" :Summ_days_err-1,
 						"Files" : fileLayout,
 						"Errors" : errMsgs
 						
