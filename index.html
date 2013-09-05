@@ -147,11 +147,12 @@ var arrayRange = 12;
 var domainMax = 20000000;
 var domainMin = 0;
 //Controls
-var select_1 = "tot";
+var select_1 = "err";
 var strSelectID = "TOTAL LOADED RECORDS";
 var select_Class = "";
 var BIGDATA = [];
 var selectedDate = ""
+var selectedDateLast = ""
 
 var SummaryData = [];
 var SelectedData = [];
@@ -267,21 +268,25 @@ d3.select(".control_1").append("td")
 ///--mouseover /out functions ----//
 function mouseOver(Ind) {
 			select_1 = Ind;
+			var newSelecteddate = selectedDate;
+			console.log("selectedDate -> " + selectedDate + "| newSelecteddate ->" + newSelecteddate);
 			console.log("document.getElementById(select_1).value");
 			console.log(document.getElementById(select_1).textContent);
 			var textVal = document.getElementById(select_1).textContent;
 			strSelectID  = textVal;
 			d3.select("#sub_title").text(textVal);
+			
+			//var d = new Date();
+			//selectedDate = buildDataview (d, "");
+			//buildSelectData(selectedDate, "");
+			console.log("selectedDateLastHERE:" + selectedDateLast);
+			document.getElementById(selectedDateLast).focus();
 			d3.selectAll("svg").remove();
 			console.log(select_1)
 			drawCalender(select_1);
 			
-}
-
-function mouseOut(Ind) {
-			select_1 = Ind;
-			d3.selectAll("svg").remove();
-			drawCalender(select_1);
+			
+			
 }
 ///--mouseover /out functions END----//
 
@@ -587,6 +592,7 @@ var d = new Date();
 selectedDate = buildDataview (d, "");
 var selectedDateD = buildDisplayDate (selectedDate);
 console.log(selectedDate)
+selectedDateLast = selectedDate;
 document.getElementById(selectedDate).focus();
 buildSelectData(selectedDate, "");
 /*console.log("document.getElementById(selectedDate).class")
@@ -655,8 +661,10 @@ function drawCalender(ind) {
 
 //console.log("BIGDATA-drawCalender");
 //console.log(BIGDATA);
+
+
 var d = new Date();
-buildDataview (d, "");
+//buildDataview (d, "");
 console.log("drawCalender");
 console.log(selectedDate);
 var dataBIG = d3.nest()
@@ -722,6 +730,7 @@ var rect = svg.selectAll(".day")
     .attr("y", function(d) { return day(d) * cellSize; })
 	.on("mouseover", function(d) { 
 		//console.log("rect : " + d);
+		selectedDateLast = d;
 		buildSelectData(d, "day");
 	})
 	.attr("id", function(d) { var strDate = buildDataview(d, ""); return strDate;})
@@ -958,7 +967,7 @@ function buildSelectData (strDt, StrClass) {
 	//if (origDt !="") 
 	d3.select("#currDate").text(displayDt);
 	//else d3.select("#currDate").text(strDt);
-	
+	selectedDate = strDt;
 	try { document.getElementById(strDt).focus();
 	}
 	catch(err)
@@ -1055,6 +1064,10 @@ function buildSelectData (strDt, StrClass) {
 		d3.select("#derrM").text("NA");
 		
 	}
+	//console.log("selectedDateLast:" + selectedDateLast);
+	//document.getElementById(selectedDateLast).focus();
+	//var idSelect = "#"+selectedDateLast;
+	//document.getElementById(selectedDateLast).attr("style", "stroke:red");
 	//d3.select("#dtot").text( function(d) {SelectedData[0].Tot_Records;});
 }
 function buildSummaryData () {
