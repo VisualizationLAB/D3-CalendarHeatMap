@@ -11,10 +11,19 @@ body {
   //fill: #fff;
   fill:rgba(179,179,179,0.2);
   //stroke: #ccc;
+  outline-style:none;
   stroke: #fff;
   stroke-width: 1px;
+  outline-width:1px;	
+  outline-style:none;
+	outline-color:#fff;
 }
 
+.day.active {
+  outline-width:1px;	
+  outline-style:dotted;
+  outline-color:black;
+}
 
 .month {
   fill: none;
@@ -34,14 +43,25 @@ body {
 }
 #summ_row1 {
   //color: rgba(153, 153, 153,.7);
-  color: rgba(51, 102, 153,1);
+  //color: rgba(51, 102, 153,1);
+  color:rgba(179,179,179,1);
   stroke: red;
-  font-size:11px;
+  font-size:12px;
   //font-weight:bold;
+}
+
+.label1.active {
+  font-size:17px;
+ //color:rgba(0,104,55,.3); 
+ color: rgba(51, 102, 153,1);
+}
+.label2.active {
+  font-size:30px;
 }
 .sub_title{
   //color: rgba(153, 153, 153,.7);
-  color: rgba(51, 102, 153,1);
+  //color: rgba(51, 102, 153,1);
+  color: blue;
   stroke: red;
   font-size:14px;
   font-weight:bold;
@@ -127,6 +147,32 @@ cell-padding: 10;
 .qE0-11{fill:rgba(165,0,38,.075)}
 .NqE0-11{fill:rgba(0,104,55,.3)}
 
+.qE10-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE9-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE8-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE7-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE6-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE5-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE4-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE3-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE2-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE1-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.qE0-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.NqE0-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+
+.q10-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q9-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q8-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q7-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q6-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q5-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q4-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q3-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q2-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q1-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.q0-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+.Nq0-11.active {outline-width:1px;	outline-style:dotted;outline-color:black;}
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -153,6 +199,9 @@ var select_Class = "";
 var BIGDATA = [];
 var selectedDate = ""
 var selectedDateLast = ""
+var lastClicked;
+var lastSelectedLabel;
+//var lastClicked;
 
 var SummaryData = [];
 var SelectedData = [];
@@ -266,12 +315,27 @@ d3.select(".control_1").append("td")
 	.text("DATE")*/
 	
 ///--mouseover /out functions ----//
+function labelClick(obj, objid) {
+
+try {d3.select(lastSelectedLabel).style("font-size", "11px");} catch(err){}
+lastSelectedLabel = obj;
+var dobjid = "d"+objid;
+console.log(dobjid);
+var container = document.getElementById(dobjid),
+innerdiv = container.getElementsByClassName("label2");
+innerdiv.style("font-size", "40px");
+d3.select(obj).style("font-size", "20px");
+
+}
+
 function mouseOver(Ind) {
 			select_1 = Ind;
 			var newSelecteddate = selectedDate;
 			console.log("selectedDate -> " + selectedDate + "| newSelecteddate ->" + newSelecteddate);
 			console.log("document.getElementById(select_1).value");
 			console.log(document.getElementById(select_1).textContent);
+			//document.getElementById(select_1).style("font-size", "10px")
+			
 			var textVal = document.getElementById(select_1).textContent;
 			strSelectID  = textVal;
 			d3.select("#sub_title").text(textVal);
@@ -279,54 +343,103 @@ function mouseOver(Ind) {
 			//var d = new Date();
 			//selectedDate = buildDataview (d, "");
 			//buildSelectData(selectedDate, "");
+			
 			console.log("selectedDateLastHERE:" + selectedDateLast);
+			
 			document.getElementById(selectedDateLast).focus();
+			
 			d3.selectAll("svg").remove();
 			console.log(select_1)
-			drawCalender(select_1);
 			
 			
+			drawCalender(select_1, "1");
+			
+			
+			
+			console.log("lastClicked:"+lastClicked)
+			console.log(lastClicked)
+			console.log(typeof(lastClicked))
+			//try { d3.select(lastClicked).style("outline-style", "none"); }
+			//catch(err){}
+			
+			//var container = document.getElementById(lastClicked.id),
+			//innerDiv = document.getElementsByClassName(lastClicked.class);
+
+			//innerDiv.click();
+			//container.click();
+			
+			//d3.select(lastClicked).click();
+			//d3.selectAll("rect").classed("active", false)
+			//d3.select(lastClicked).classed("active", true)
+			
+			//d3.select(lastClicked).style("outline-style", "dotted");
+			//d3.select(lastClicked).style("outline-color", "red");
 			
 }
 ///--mouseover /out functions END----//
 
 d3.select(".summ_row1").append("td")
 	.attr("align", "right")
+	.attr("class", "label1")
 	.attr("id", "upd")
 	.text("UPDATED RECORDS")
-	.on("mouseover", function(d) {mouseOver (this.id); return;})
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 
 d3.select(".summ_row1").append("td")
 	.attr("align", "right")
+	.attr("class", "label1")
 	.attr("id", "new")
 	.text("INSERTED RECORDS")
-	.on("mouseover", function(d) {mouseOver (this.id); return;})
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); mouseOver (this.id);return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 	
 d3.select(".summ_row1").append("td")
 	.attr("align", "right")
+	.attr("class", "label1")
 	.attr("id", "tot")
 	.text("TOTAL LOADED RECORDS")
-	.on("mouseover", function(d) {mouseOver (this.id); return;})
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 	  
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
+	.attr("class", "label1")
 	.attr("id", "err")
 	.text("FAILED RECORDS")
-	.attr("style", "color:red;")
-	.on("mouseover", function(d) {mouseOver (this.id); return;})
+	.attr("style", "color:rgba(165,0,38,.4);")
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 	  
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
 	.attr("id", "durH")
+	.attr("class", "label1")
 	.text("LOAD TIME (Hrs)")
-	.on("mouseover", function(d) {mouseOver (this.id); return;})
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
+	.attr("class", "label1")
+	.attr("id", "fileT")
 	.text("FILE TYPES")
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
-	.attr("style", "color:red;")
+	.attr("class", "label1")
+	.attr("style", "color:rgba(165,0,38,.4);")
+	.attr("id", "errT")
 	.text("ERROR TYPES")
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
+	//.on("click", function(d) { labelClick (this, this.id); return;})
 	
 //--Summary Section row 2 --//
 d3.select(".summary").append("tr")
@@ -336,39 +449,56 @@ d3.select(".summary").append("tr")
 	/*.append("td")
 	.attr("align", "left")
 	.text("NA")*/
-d3.select(".summ_row2").append("td")
+d3.select("#summ_row2").append("td")
 	.attr("align", "right")
 	.attr("id","dupd")
-	.text("NA")
+	.attr("class", "label2")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("");
 	
-d3.select(".summ_row2").append("td")
+d3.select("#summ_row2").append("td")
 	.attr("align", "right")
+	.attr("class", "label2")
 	.attr("id","dnew")
-	.text("NA")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("");
 	
-d3.select(".summ_row2").append("td")
+d3.select("#summ_row2").append("td")
 	.attr("align", "right")
+	.attr("class", "label2")
 	.attr("id","dtot")
-	.text("NA")
-d3.select(".summ_row2").append("td")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("");
+d3.select("#summ_row2").append("td")
 	.attr("align", "left")
+	.attr("class", "label2")
 	.attr("id","derr")
-	.attr("style", "color:red;")
-	.text("NA")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("");
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)");
 
-d3.select(".summ_row2").append("td")
+d3.select("#summ_row2").append("td")
 	.attr("align", "left")
+	.attr("class", "label2")
 	.attr("id","ddurH")
-	.text("NA")
-d3.select(".summ_row2").append("td")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("");
+
+d3.select("#summ_row2").append("td")
 	.attr("align", "left")
+	.attr("class", "label2")
 	.attr("id","dfile")
-	.text("NA")
-d3.select(".summ_row2").append("td")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("")
+	
+d3.select("#summ_row2").append("td")
 	.attr("align", "left")
+	.attr("class", "label2")
 	.attr("id","derrM")
-	.attr("style", "color:red;")
-	.text("NA")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)")
+	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.text("")
+	//.style("font-size" ,"20px");
 //--SUMARY - WHITE LINE --//
 /*d3.select(".summary").append("tr")
 	.attr("class","summ_Line")
@@ -548,7 +678,9 @@ var arrNew = [];
 var arrUpd = [];
 var arrDurHrs = [];
 var arrFileLayout = [];
+var arrFileT = [];
 var arrErrMsgs = [];
+var arrErrT = [];
 var objData = [];
 
 function ready(error, dataCsv) {
@@ -566,6 +698,39 @@ dataOriginal.forEach(function(d){
 		arrDurHrs.push(d3.round(Number(d.Tot_Duration_Hrs),2));
 		arrFileLayout.push(d.File_Layouts);
 		arrErrMsgs.push(d.Error_Msgs);
+		
+		//console.log(d.File_Layouts);
+		if (d.File_Layouts != "" && typeof(d.File_Layouts) != "undefined" ) {
+			var strFilString = d.File_Layouts;
+			var strFile = "";
+			strCurrFile = strFilString.split("|");
+			strCurrFile.forEach (function(d) {
+				if (strFile.indexOf(d) == -1 && (d !="") ) strFile = strFile + d + "|";});
+			var newArr = strFile.split("|");
+			var FileCnt = parseInt(newArr.length-1);
+		}
+		else var FileCnt = 0;
+		
+		arrFileT.push(parseInt(FileCnt));
+	
+		if (d.Error_Msgs != "" && typeof(d.Error_Msgs) != "undefined" ) {
+			var strCurrErr = d.Error_Msgs.split("|");
+			var strFileErr = "";
+			for (var i=0;i<strCurrErr.length;i++)
+				{
+				if (strFileErr.indexOf(strCurrErr[i]) == -1 && (i%2 == 0) ) 
+					{
+						strFileErr = strFileErr + strCurrErr[i] + "|";
+					}
+				}
+			
+			var newArr = strFileErr.split("|");
+			var ErrCnt = parseInt(newArr.length-1);
+		}
+		else var ErrCnt = 0;
+		
+		arrErrT.push(parseInt(ErrCnt));
+		
 		var datarow = {
 						"Date" : d.Date,
 						"Tot_Records" :  parseInt(d.Tot_Records),
@@ -575,17 +740,23 @@ dataOriginal.forEach(function(d){
 						"Tot_Duration_Secs" : d3.round(Number(d.Tot_Duration_Secs),2),
 						"Tot_Duration_Hrs" : d3.round(Number(d.Tot_Duration_Hrs),2),
 						"File_Layouts" : d.File_Layouts,
-						"Error_Msgs" : d.Error_Msgs
+						"Error_Msgs" : d.Error_Msgs,
+						"File_Cnt" : parseInt(FileCnt),
+						"Err_Cnt" : parseInt(ErrCnt)
+						
 						};
 		BIGDATA.push(datarow);
 		//console.log("d.Tot_Failures");
 		//console.log(d.Tot_Failures);
 		//console.log(arrFail);
 		})
-//console.log("BIGDATA");
-//console.log(BIGDATA);
+console.log("BIGDATA");
+console.log(BIGDATA);
+console.log(arrFileT);
+console.log(arrErrT);
+
 buildSummaryData ();
-drawCalender(select_1);
+drawCalender(select_1, "0");
 //console.log("onload() : " + selectedDate);
 
 var d = new Date();
@@ -630,11 +801,17 @@ case "upd":
 case "durH":
   domainMax = d3.max(arrDurHrs)
   break;
+case "fileT":
+  domainMax = d3.max(arrFileT)
+  break;
+ case "errT":
+  domainMax = d3.max(arrErrT)
+  break;
 }
 //return domainMax;
 }
 
-function getData(val,opt1,opt2,opt3,opt4,opt5) {
+function getData(val,opt1,opt2,opt3,opt4,opt5,opt6,opt7) {
 switch (val)
 {
 case "tot":
@@ -652,12 +829,18 @@ case "upd":
 case "durH":
   vData = opt5
   break;
+ case "fileT":
+  vData = opt6
+  break;
+ case "errT":
+  vData = opt7
+  break;
 }
 return vData;
 }
 
 // -- calendar building starts --//
-function drawCalender(ind) {
+function drawCalender(ind, caller) {
 
 //console.log("BIGDATA-drawCalender");
 //console.log(BIGDATA);
@@ -670,7 +853,10 @@ console.log(selectedDate);
 var dataBIG = d3.nest()
 			.key(function(d) { return d.Date; })
 			.rollup(function(d) { //console.log(select_1); 
-									var dataVal = getData(select_1,parseInt(d[0].Tot_Records),parseInt(d[0].Tot_Failures),parseInt(d[0].Tot_Inserts),parseInt(d[0].Tot_Updates),Number(d[0].Tot_Duration_Hrs));
+									//console.log("HERERERERERRE");
+									//console.log(d);
+									//console.log(d[0].File_Cnt);
+									var dataVal = getData(select_1,parseInt(d[0].Tot_Records),parseInt(d[0].Tot_Failures),parseInt(d[0].Tot_Inserts),parseInt(d[0].Tot_Updates),Number(d[0].Tot_Duration_Hrs),parseInt(d[0].File_Cnt),parseInt(d[0].Err_Cnt));
 									return dataVal;
 								})
 			.map(BIGDATA);
@@ -687,7 +873,7 @@ var color = d3.scale.quantize()
    .domain([domainMin,domainMax])
     .range(d3.range(arrayRange-1).map(function(d) { 
 							var strVal = "";
-							if (select_1 == "err" || select_1 == "durH" ) 
+							if (select_1 == "err" || select_1 == "durH" ||  select_1 == "errT" ) 
 							{ 
 								strVal = "qE" + d + "-11";
 							}
@@ -717,6 +903,7 @@ svg.append("text")
     .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
     .style("text-anchor", "middle")
     .text(function(d) { return d; });
+	
 
 var rect = svg.selectAll(".day")
     .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
@@ -729,16 +916,29 @@ var rect = svg.selectAll(".day")
     .attr("x", function(d) { return week(d) * cellSize; })
     .attr("y", function(d) { return day(d) * cellSize; })
 	.on("mouseover", function(d) { 
-		//console.log("rect : " + d);
 		selectedDateLast = d;
+		d3.selectAll("rect").classed("active", false)
+		d3.select(this).classed("active", true)
 		buildSelectData(d, "day");
+	})
+	.on("click", function(){
+		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
+		
+		console.log("lastClicked: BEFORE - " + lastClicked)
+		console.log(lastClicked)
+		console.log(caller)
+		if (caller == "0") lastClicked = this;
+		
+		console.log("lastClicked: NOW - " + lastClicked)
+		console.log(lastClicked)
+		d3.select(lastClicked).style("outline-style", "dotted"); 
+		d3.select(lastClicked).style("outline-color", "red"); 
 	})
 	.attr("id", function(d) { var strDate = buildDataview(d, ""); return strDate;})
     .datum(format);
 	
 rect.append("title")
    .text(function(d) { return d; });
-	//.text(function(d) { return this.id; });
 
 svg.selectAll(".month")
     .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
@@ -767,6 +967,7 @@ var DataArr = [];
 rect.filter(function(d) { return d in dataBIG; })
 	.attr("class", function(d) { 
 							DataArr.push(dataBIG[d]);
+							
 							if (dataBIG[d] == 0) 
 							{
 								//console.log("day N" + color(dataBIG[d]));
@@ -780,6 +981,11 @@ rect.filter(function(d) { return d in dataBIG; })
 							
 		})
 	.on("mouseover", function(d) { 
+		selectedDateLast = d;
+		
+		d3.selectAll("rect").classed("active", false)
+		d3.select(this).classed("active", true)
+		
 		if (dataBIG[d] == 0) 
 			{
 				//console.log("day N" + color(dataBIG[d]));
@@ -789,17 +995,25 @@ rect.filter(function(d) { return d in dataBIG; })
 			{	
 				//console.log("day " + color(dataBIG[d]));
 			var strClass = "day " + color(dataBIG[d]);
-			}
-		//console.log(dataBIG[d] + " | " + d + "|" + strClass);				
+			}	
 		buildSelectData (d,strClass);
 	} )
-	.attr("id", function(d) { 
-		//console.log("dataBIG-drawCalender"); 
-		return d;})
+	.on("click", function(){	
+		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
+		
+		console.log("lastClicked: BEFORE - " + lastClicked)
+		console.log(lastClicked)
+		
+		if (caller == "0") lastClicked = this;
+		console.log("lastClicked: NOW - " + lastClicked)
+		console.log(lastClicked)
+		d3.select(lastClicked).style("outline-style", "dotted"); 
+		d3.select(lastClicked).style("outline-color", "red"); 
+	})
+	.attr("id", function(d) { return d;})
 	.select("title")
 	.text(function(d) { 
-			return d + ": " + addCommas(dataBIG[d]); 
-		});
+			return d + ": " + addCommas(dataBIG[d]); });
 
 	
 var increment  = (d3.max(DataArr) - d3.min(DataArr))/arrayRange;
@@ -962,6 +1176,10 @@ return strDateX;
 
 function buildSelectData (strDt, StrClass) {
 	SelectedData = [];
+	//console.log("StrClass:" + StrClass)
+	//var strDate = "#"+strDt;
+	//console.log("StrClass:" + StrClass + "|strDate:"+strDate)
+	//d3.select(strDate).style("stroke:red;");
 	
 	var displayDt = buildDisplayDate(strDt);
 	//if (origDt !="") 
@@ -1051,10 +1269,26 @@ function buildSelectData (strDt, StrClass) {
 				d3.select("#ddurH").text(function (x) { return addCommas(d.Tot_Duration_Hrs);});
 				d3.select("#dfile").text(function (x) { return addCommas(d.File_Layouts);});
 				d3.select("#derrM").text(function (x) { return addCommas(d.Error_Msgs);});
+				
+				//d3.select("#dtot").style("color" , "rgba(51, 102, 153,1)");
+				if(d.Tot_Failures > 0) { 
+					d3.selectAll(".label2").style("color" , "rgba(165,0,38,.7)");
+					//d3.select("#derr").style("color" , "rgba(165,0,38,.7)");
+					//d3.select("#dtot").style("color" , "rgba(51, 102, 153,1)");
+				}
+				//else d3.select("#derr").style("color" , "rgba(0,104,55,1)");
+				else d3.selectAll(".label2").style("color" , "rgba(0,104,55,1)");
+				//d3.select("#dupd").style("color" , "rgba(51, 102, 153,1)");
+				//d3.select("#dnew").style("color" , "rgba(51, 102, 153,1)");
+				//d3.select("#ddurH").style("color" , "rgba(165,0,38,.7)");
+				//d3.select("#dfile").style("color" , "rgba(51, 102, 153,1)");
+				//d3.select("#derrM").style("color" , "rgba(165,0,38,.7)");
 			});
+		
 	}
 	else
 	{
+		d3.selectAll(".label2").style("color" , "rgba(179,179,179,1)");
 		d3.select("#dtot").text("NA");
 		d3.select("#derr").text("NA");
 		d3.select("#dupd").text("NA");
@@ -1192,6 +1426,7 @@ function addCommas(nStr)
 	}
 	return x1 + x2;
 }
+//d3.select(".C4").on("mouseout" , function() { d3.select(selectedDateLast).classed("active", false)});
 d3.select(self.frameElement).style("height", "2910px");
 
 </script>
