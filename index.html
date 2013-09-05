@@ -1271,7 +1271,7 @@ function buildSelectData (strDt, StrClass) {
 				d3.select("#derrM").text(function (x) { return addCommas(d.Error_Msgs);});
 				
 				//d3.select("#dtot").style("color" , "rgba(51, 102, 153,1)");
-				if(d.Tot_Failures > 0) { 
+				if(d.Tot_Failures > 0 || d.Error_Msgs > 0) { 
 					d3.selectAll(".label2").style("color" , "rgba(165,0,38,.7)");
 					//d3.select("#derr").style("color" , "rgba(165,0,38,.7)");
 					//d3.select("#dtot").style("color" , "rgba(51, 102, 153,1)");
