@@ -205,7 +205,7 @@ var domainMax = 20000000;
 var domainMin = 0;
 //Controls
 var select_1 = "err";
-var strSelectID = "TOTAL LOADED RECORDS";
+var strSelectID = "FAILED RECORDS";
 var select_Class = "";
 var BIGDATA = [];
 var selectedDate = ""
@@ -331,7 +331,7 @@ function labelClick(obj, objid) {
 try {d3.select(lastSelectedLabel).style("font-size", "11px");} catch(err){}
 lastSelectedLabel = obj;
 var dobjid = "d"+objid;
-console.log(dobjid);
+//console.log(dobjid);
 var container = document.getElementById(dobjid),
 innerdiv = container.getElementsByClassName("label2");
 innerdiv.style("font-size", "40px");
@@ -342,7 +342,7 @@ d3.select(obj).style("font-size", "20px");
 function mouseOver(Ind) {
 			select_1 = Ind;
 			var newSelecteddate = selectedDate;
-			console.log("selectedDate -> " + selectedDate + "| newSelecteddate ->" + newSelecteddate);
+			//console.log("selectedDate -> " + selectedDate + "| newSelecteddate ->" + newSelecteddate);
 			console.log("document.getElementById(select_1).value");
 			console.log(document.getElementById(select_1).textContent);
 			//document.getElementById(select_1).style("font-size", "10px")
@@ -355,7 +355,7 @@ function mouseOver(Ind) {
 			//selectedDate = buildDataview (d, "");
 			//buildSelectData(selectedDate, "");
 			
-			console.log("selectedDateLastHERE:" + selectedDateLast);
+			//console.log("selectedDateLastHERE:" + selectedDateLast);
 			
 			document.getElementById(selectedDateLast).focus();
 			
@@ -367,9 +367,9 @@ function mouseOver(Ind) {
 			
 			
 			
-			console.log("lastClicked:"+lastClicked)
-			console.log(lastClicked)
-			console.log(typeof(lastClicked))
+			//console.log("lastClicked:"+lastClicked)
+			//console.log(lastClicked)
+			//console.log(typeof(lastClicked))
 			//try { d3.select(lastClicked).style("outline-style", "none"); }
 			//catch(err){}
 			
@@ -393,6 +393,11 @@ d3.select(".summ_row1").append("td")
 	.attr("class", "label1")
 	//.attr("id","Sdupd")
 	//.text("TOTAL")
+
+d3.select(".summ_row1").append("td")
+	.attr("align", "right")
+	.attr("class", "label1")
+	.text("DAYS");
 	
 d3.select(".summ_row1").append("td")
 	.attr("align", "right")
@@ -447,6 +452,13 @@ d3.select(".summ_row1").append("td")
 	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
 	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
 	//.on("click", function(d) { labelClick (this, this.id); return;})
+
+d3.select(".summ_row1").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
+	.attr("id", "email")
+	.text("EMAILS")
+	
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
 	.attr("class", "label1")
@@ -456,10 +468,7 @@ d3.select(".summ_row1").append("td")
 	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
 	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
 	//.on("click", function(d) { labelClick (this, this.id); return;})
-d3.select(".summ_row1").append("td")
-	.attr("align", "left")
-	.attr("class", "label1")
-	.text("DAYS");
+
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
 	.attr("class", "label1")
@@ -479,6 +488,10 @@ d3.select(".summary").append("tr")
 	/*.append("td")
 	.attr("align", "left")
 	.text("NA")*/
+	
+d3.select("#summ_row2").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
@@ -529,6 +542,12 @@ d3.select("#summ_row2").append("td")
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
+	.attr("id","demail")
+	.text("");
+	
+d3.select("#summ_row2").append("td")
+	.attr("align", "left")
+	.attr("class", "label2")
 	.attr("id","derrM")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)")
 	.attr("style","color:rgba(179,179,179,1);")
@@ -548,6 +567,13 @@ d3.select(".summ_row3_1").append("td")
 	.attr("align", "right")
 	.attr("class", "Summ1")
 	.text("total")
+	
+d3.select(".summ_row3_1").append("td")
+	.attr("align", "right")
+	.attr("class", "Summ1")
+	.attr("id","SdDAYS")
+	.text("NA")
+
 	
 d3.select(".summ_row3_1").append("td")
 	.attr("align", "right")
@@ -583,14 +609,15 @@ d3.select(".summ_row3_1").append("td")
 d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
 	.attr("class", "Summ1")
-	.attr("style", "color:rgba(165,0,38,.4);")
-	.attr("id","SderrM")
-	.text("NA")
+	.attr("id","Sdemail")
+	.text("NA");
 d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
 	.attr("class", "Summ1")
-	.attr("id","SdDAYS")
+	.attr("style", "color:rgba(165,0,38,.4);")
+	.attr("id","SderrM")
 	.text("NA")
+
 d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
 	.attr("id","SderrDAYS")
@@ -660,6 +687,10 @@ var arrFileLayout = [];
 var arrFileT = [];
 var arrErrMsgs = [];
 var arrErrT = [];
+
+var arrUniqueEmails = [];
+var arrEmails = [];
+
 var objData = [];
 
 function ready(error, dataCsv) {
@@ -668,7 +699,7 @@ console.log(dataCsv);
 dataOriginal = dataCsv;
 
 dataOriginal.forEach(function(d){ 
-		console.log(d.Date);
+		//console.log(d.Date);
 		arrDates.push(d.Date);
 		arrFail.push(parseInt(d.Tot_Failures));
 		arrVol.push(parseInt(d.Tot_Records));
@@ -677,6 +708,9 @@ dataOriginal.forEach(function(d){
 		arrDurHrs.push(d3.round(Number(d.Tot_Duration_Hrs),2));
 		arrFileLayout.push(d.File_Layouts);
 		arrErrMsgs.push(d.Error_Msgs);
+		arrUpd.push(parseInt(d.Tot_Updates));
+		arrEmails.push(parseInt(d.tot_emails));
+		arrUniqueEmails.push(parseInt(d.tot_unique_emails));
 		
 		//console.log(d.File_Layouts);
 		if (d.File_Layouts != "" && typeof(d.File_Layouts) != "undefined" ) {
@@ -721,8 +755,9 @@ dataOriginal.forEach(function(d){
 						"File_Layouts" : d.File_Layouts,
 						"Error_Msgs" : d.Error_Msgs,
 						"File_Cnt" : parseInt(FileCnt),
-						"Err_Cnt" : parseInt(ErrCnt)
-						
+						"Err_Cnt" : parseInt(ErrCnt),
+						"tot_emails" : parseInt(d.tot_emails),
+						"tot_unique_emails" : parseInt(d.tot_unique_emails)
 						};
 		BIGDATA.push(datarow);
 		//console.log("d.Tot_Failures");
@@ -731,8 +766,8 @@ dataOriginal.forEach(function(d){
 		})
 console.log("BIGDATA");
 console.log(BIGDATA);
-console.log(arrFileT);
-console.log(arrErrT);
+//console.log(arrFileT);
+//console.log(arrErrT);
 
 buildSummaryData ();
 drawCalender(select_1, "0");
@@ -741,7 +776,7 @@ drawCalender(select_1, "0");
 var d = new Date();
 selectedDate = buildDataview (d, "");
 var selectedDateD = buildDisplayDate (selectedDate);
-console.log(selectedDate)
+//console.log(selectedDate)
 selectedDateLast = selectedDate;
 document.getElementById(selectedDate).focus();
 buildSelectData(selectedDate, "");
@@ -828,7 +863,7 @@ function drawCalender(ind, caller) {
 var d = new Date();
 //buildDataview (d, "");
 console.log("drawCalender");
-console.log(selectedDate);
+//console.log(selectedDate);
 var dataBIG = d3.nest()
 			.key(function(d) { return d.Date; })
 			.rollup(function(d) { //console.log(select_1); 
@@ -839,14 +874,14 @@ var dataBIG = d3.nest()
 									return dataVal;
 								})
 			.map(BIGDATA);
-console.log("dataBIG-drawCalender");
-console.log(dataBIG);			
+//console.log("dataBIG-drawCalender");
+//console.log(dataBIG);			
 
 getDomainMax(select_1,"domainMax");
 
-	console.log("domainMax");
-	console.log(domainMax);
-	console.log(select_1);
+	//console.log("domainMax");
+	//console.log(domainMax);
+	//console.log(select_1);
 	
 var color = d3.scale.quantize()
    .domain([domainMin,domainMax])
@@ -868,7 +903,7 @@ var color = d3.scale.quantize()
 							));
 
 
-console.log(color.domain());
+//console.log(color.domain());
 var svg = d3.select(".C4").selectAll("svg")
 	.data(d3.range(2013, 2014))
   .enter().append("svg")
@@ -903,13 +938,13 @@ var rect = svg.selectAll(".day")
 	.on("click", function(){
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
 		
-		console.log("lastClicked: BEFORE - " + lastClicked)
-		console.log(lastClicked)
-		console.log(caller)
+		//console.log("lastClicked: BEFORE - " + lastClicked)
+		//console.log(lastClicked)
+		//console.log(caller)
 		if (caller == "0") lastClicked = this;
 		
-		console.log("lastClicked: NOW - " + lastClicked)
-		console.log(lastClicked)
+		//console.log("lastClicked: NOW - " + lastClicked)
+		//console.log(lastClicked)
 		d3.select(lastClicked).style("outline-style", "dotted"); 
 		d3.select(lastClicked).style("outline-color", "red"); 
 	})
@@ -980,12 +1015,12 @@ rect.filter(function(d) { return d in dataBIG; })
 	.on("click", function(){	
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
 		
-		console.log("lastClicked: BEFORE - " + lastClicked)
-		console.log(lastClicked)
+		//console.log("lastClicked: BEFORE - " + lastClicked)
+		//console.log(lastClicked)
 		
 		if (caller == "0") lastClicked = this;
-		console.log("lastClicked: NOW - " + lastClicked)
-		console.log(lastClicked)
+		//console.log("lastClicked: NOW - " + lastClicked)
+		//console.log(lastClicked)
 		d3.select(lastClicked).style("outline-style", "dotted"); 
 		d3.select(lastClicked).style("outline-color", "red"); 
 	})
@@ -1226,7 +1261,10 @@ function buildSelectData (strDt, StrClass) {
 						"File_Layouts" : fileLayout.length,
 						"Error_Msgs" : errMsgs.length,
 						"Files" : fileLayout,
-						"Errors" : errMsgs
+						"Errors" : errMsgs,
+						"tot_emails" : parseInt(d.tot_emails),
+						"tot_unique_emails" : parseInt(d.tot_unique_emails)
+						
 					}
 					
 			SelectedData.push(datarow);
@@ -1248,7 +1286,7 @@ function buildSelectData (strDt, StrClass) {
 				d3.select("#ddurH").text(function (x) { return addCommas(d.Tot_Duration_Hrs);});
 				d3.select("#dfile").text(function (x) { return addCommas(d.File_Layouts);});
 				d3.select("#derrM").text(function (x) { return addCommas(d.Error_Msgs);});
-				
+				d3.select("#demail").text(function (x) { return addCommas(d.tot_unique_emails);});
 				//d3.select("#dtot").style("color" , "rgba(51, 102, 153,1)");
 				if(d.Tot_Failures > 0 || d.Error_Msgs > 0) { 
 					d3.selectAll(".label2").style("color" , "rgba(165,0,38,.7)");
@@ -1276,6 +1314,7 @@ function buildSelectData (strDt, StrClass) {
 		d3.select("#ddurH").text("None");
 		d3.select("#dfile").text("None");
 		d3.select("#derrM").text("None");
+		d3.select("#demail").text("None");
 		
 	}
 	//console.log("selectedDateLast:" + selectedDateLast);
@@ -1290,6 +1329,9 @@ function buildSummaryData () {
 	var Summ_Err = 0;
 	var Summ_Upd = 0;
 	var Summ_New = 0;
+	
+	var Summ_Email = 0;
+	
 	var Summ_Load_sec = 0.00;
 	var Summ_Load_hr = 0.00;
 	var Summ_days = 0;
@@ -1309,6 +1351,7 @@ function buildSummaryData () {
 		if (! isNaN(d.Tot_Inserts)) Summ_New = Summ_New + parseInt(d.Tot_Inserts);
 		if (! isNaN(d.Tot_Duration_Hrs)) Summ_Load_hr = Summ_Load_hr + d3.round(Number(d.Tot_Duration_Hrs),2);
 		if (! isNaN(d.Tot_Duration_Secs)) Summ_Load_sec = Summ_Load_sec + d3.round(Number(d.Tot_Duration_Secs),2);
+		if (! isNaN(d.tot_unique_emails)) Summ_Email = Summ_Email + parseInt(d.tot_unique_emails);
 		
 		Summ_days  = Summ_days +1;
 		if (d.Tot_Failures > 0) Summ_days_err = Summ_days_err +1;
@@ -1360,8 +1403,8 @@ function buildSummaryData () {
 						"Tot_days" : Summ_days-1,
 						"Tot_Err_days" :Summ_days_err-1,
 						"Files" : fileLayout,
-						"Errors" : errMsgs
-						
+						"Errors" : errMsgs,
+						"tot_unique_emails" :  Summ_Email
 						
 					}
 	SummaryData.push(datarow);
@@ -1378,6 +1421,7 @@ function buildSummaryData () {
 				d3.select("#SderrM").text(function (x) { return addCommas(d.Error_Msgs);});
 				d3.select("#SderrDAYS").text(function (x) { return addCommas(d.Tot_Err_days);});
 				d3.select("#SdDAYS").text(function (x) { return addCommas(d.Tot_days);});
+				d3.select("#Sdemail").text(function (x) { return addCommas(d.tot_unique_emails);});
 			});
 	}
 	else
@@ -1391,6 +1435,7 @@ function buildSummaryData () {
 		d3.select("#SderrM").text("");
 		d3.select("#SderrDAYS").text("");
 		d3.select("#SdDAYS").text("");
+		d3.select("#Sdemail").text("");
 		
 	}
 }
