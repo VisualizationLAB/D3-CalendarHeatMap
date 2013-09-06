@@ -458,6 +458,8 @@ d3.select(".summ_row1").append("td")
 	.attr("class", "label1")
 	.attr("id", "email")
 	.text("EMAILS")
+	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
+	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
 	
 d3.select(".summ_row1").append("td")
 	.attr("align", "left")
@@ -821,11 +823,14 @@ case "fileT":
  case "errT":
   domainMax = d3.max(arrErrT)
   break;
+case "email":
+  domainMax = d3.max(arrUniqueEmails)
+  break;
 }
 //return domainMax;
 }
 
-function getData(val,opt1,opt2,opt3,opt4,opt5,opt6,opt7) {
+function getData(val,opt1,opt2,opt3,opt4,opt5,opt6,opt7, opt8) {
 switch (val)
 {
 case "tot":
@@ -849,6 +854,9 @@ case "durH":
  case "errT":
   vData = opt7
   break;
+ case "email":
+  vData = opt8
+  break;
 }
 return vData;
 }
@@ -870,7 +878,7 @@ var dataBIG = d3.nest()
 									//console.log("HERERERERERRE");
 									//console.log(d);
 									//console.log(d[0].File_Cnt);
-									var dataVal = getData(select_1,parseInt(d[0].Tot_Records),parseInt(d[0].Tot_Failures),parseInt(d[0].Tot_Inserts),parseInt(d[0].Tot_Updates),Number(d[0].Tot_Duration_Hrs),parseInt(d[0].File_Cnt),parseInt(d[0].Err_Cnt));
+									var dataVal = getData(select_1,parseInt(d[0].Tot_Records),parseInt(d[0].Tot_Failures),parseInt(d[0].Tot_Inserts),parseInt(d[0].Tot_Updates),Number(d[0].Tot_Duration_Hrs),parseInt(d[0].File_Cnt),parseInt(d[0].Err_Cnt),parseInt(d[0].tot_unique_emails));
 									return dataVal;
 								})
 			.map(BIGDATA);
