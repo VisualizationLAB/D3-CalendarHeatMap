@@ -46,18 +46,24 @@ body {
   //color: rgba(51, 102, 153,1);
   color:rgba(179,179,179,1);
   stroke: red;
-  font-size:12px;
+  font-size:10px;
   //font-weight:bold;
 }
 
+.Summ1{
+  //color: rgba(153, 153, 153,.7);
+  //color: rgba(51, 102, 153,1);
+  color:rgba(179,179,179,1);
+  stroke: red;
+  font-size:15px;
+  //font-weight:bold;
+}
 .label1.active {
-  font-size:17px;
+  font-size:15px;
  //color:rgba(0,104,55,.3); 
  color: rgba(51, 102, 153,1);
 }
-.label2.active {
-  font-size:30px;
-}
+
 .sub_title{
   //color: rgba(153, 153, 153,.7);
   //color: rgba(51, 102, 153,1);
@@ -75,9 +81,14 @@ body {
 }
 #summ_row2 {
   //color: rgba(51, 102, 153,.7);
-  color: rgba(51, 102, 153,1);
+ // color: rgba(51, 102, 153,1);
+ color:rgba(179,179,179,1);
   stroke: red;
-  font-size:20px;
+  font-size:40px;
+}
+.label2 {
+	color:rgba(179,179,179,1);
+	font-size:25px;
 }
 .summ_row4 {
   //color: rgba(51, 102, 153,.7);
@@ -220,7 +231,7 @@ var mainTable = d3.select("body")
 		.attr("class" , "main")
 		.attr("id" , "main")
 		.attr("border", 0)
-		.attr("cellpadding", 15)
+		.attr("cellpadding", 10)
 		.attr("width", "100%")
 		.attr("height", "100%");
 		
@@ -291,7 +302,7 @@ mainTable.append("tr")
 	.attr("class","sub_titleL")
 	.attr("id","sub_titleL")
 	.attr("align", "center")
-	.text( function(d) {return "SUMMARY" });
+	//.text( function(d) {return "SUMMARY" });
 	
 mainTable.append("tr")
 	.attr("class", "control_2");
@@ -377,7 +388,12 @@ function mouseOver(Ind) {
 			
 }
 ///--mouseover /out functions END----//
-
+d3.select(".summ_row1").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
+	//.attr("id","Sdupd")
+	//.text("TOTAL")
+	
 d3.select(".summ_row1").append("td")
 	.attr("align", "right")
 	.attr("class", "label1")
@@ -440,8 +456,22 @@ d3.select(".summ_row1").append("td")
 	.on("mouseover", function(d) { d3.select(this).classed("active", true); mouseOver (this.id); return;})
 	.on("mouseout", function(d) { d3.select(this).classed("active", false); return;})
 	//.on("click", function(d) { labelClick (this, this.id); return;})
+d3.select(".summ_row1").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
+	.text("DAYS");
+d3.select(".summ_row1").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
+	.attr("style", "color:rgba(165,0,38,.4);")
+	.text("ERROR DAYS");
 	
 //--Summary Section row 2 --//
+d3.select(".summary").append("tr")
+	.attr("class","summ_row3_1")
+	.attr("id","summ_row3_1")
+	.attr("align","center");
+	
 d3.select(".summary").append("tr")
 	.attr("class","summ_row2")
 	.attr("id","summ_row2")
@@ -449,31 +479,36 @@ d3.select(".summary").append("tr")
 	/*.append("td")
 	.attr("align", "left")
 	.text("NA")*/
+	
+d3.select("#summ_row2").append("td")
+	.attr("align", "left")
+	.attr("class", "label1")
+	
 d3.select("#summ_row2").append("td")
 	.attr("align", "right")
 	.attr("id","dupd")
 	.attr("class", "label2")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
 	.text("");
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "right")
 	.attr("class", "label2")
 	.attr("id","dnew")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
 	.text("");
 	
 d3.select("#summ_row2").append("td")
-	.attr("align", "right")
+	.attr("align", "right	")
 	.attr("class", "label2")
 	.attr("id","dtot")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
 	.text("");
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","derr")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.attr("style","color:rgba(179,179,179,1);")
 	.text("");
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)");
 
@@ -481,14 +516,14 @@ d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","ddurH")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
 	.text("");
 
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","dfile")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
 	.text("")
 	
 d3.select("#summ_row2").append("td")
@@ -496,7 +531,7 @@ d3.select("#summ_row2").append("td")
 	.attr("class", "label2")
 	.attr("id","derrM")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)")
-	.attr("style","font-size:20px;color:rgba(179,179,179,1);")
+	.attr("style","color:rgba(179,179,179,1);")
 	.text("")
 	//.style("font-size" ,"20px");
 //--SUMARY - WHITE LINE --//
@@ -507,119 +542,63 @@ d3.select("#summ_row2").append("td")
 	.append("td")
 	.attr("align", "left")
 	.text("SUMMARY")*/
-	
-// ---SUMARY SECTION - ROW 3 and 4
-d3.select(".control_2").append("td")
-	.attr("width", "100%")
-	.attr("align", "center")
-	.append("table")
-	.attr("class", "summaryB")
-	.attr("width", "100%")
-	.attr("border", 0)
-	.attr("cellpadding", 5)
-	.append("tr")
-	.attr("class","summ_row3")
-	.attr("id","summ_row1")
-	.attr("align","center");
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("id", "Snew")
-	.text("INSERTED RECORDS")
-	//.on("mouseover", function(d) {mouseOver (this.id); return;})
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("id", "Supd")
-	.text("UPDATED RECORDS");
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.text("TOTAL DAYS");
-	/*.append("td")
-	.attr("align", "left")
-	.text("DATE")*/
-	
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("id", "Stot")
+// - appending
+
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "right")
-	.text("TOTAL LOADED RECORDS")
-	//.on("mouseover", function(d) {mouseOver (this.id); return;})
-	  
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("id", "Serr")
-	.attr("style", "color:red;")
-	.text("FAILED RECORDS")
-	//.on("mouseover", function(d) {mouseOver (this.id); return;})
-	  
-
-	//.on("mouseover", function(d) {mouseOver (this.id); return;})
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("id", "SdurH")
-	.text("LOAD TIME (Hrs)")
-	//.on("mouseover", function(d) {mouseOver (this.id); return;})
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.text("FILE TYPES")
-
-d3.select(".summ_row3").append("td")
+	.attr("class", "Summ1")
+	.text("total")
+	
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "right")
-	.attr("style", "color:red;")
-	.text("TOTAL ERROR DAYS")
-	
-d3.select(".summ_row3").append("td")
-	.attr("align", "left")
-	.attr("style", "color:red;")
-	.text("ERROR TYPES")
-
-	
-//--Summary Section row 2 --//
-d3.select(".summaryB").append("tr")
-	.attr("class","summ_row4")
-	.attr("align","center");
-	/*.append("td")
-	.attr("align", "left")
-	.text("NA")*/
-d3.select(".summ_row4").append("td")
-	.attr("align", "left")
+	.attr("class", "Summ1")
 	.attr("id","Sdupd")
 	.text("NA")
-	
-d3.select(".summ_row4").append("td")
-	.attr("align", "left")
+d3.select(".summ_row3_1").append("td")
+	.attr("align", "right")
+	.attr("class", "Summ1")
 	.attr("id","Sdnew")
 	.text("NA")
-d3.select(".summ_row4").append("td")
-	.attr("align", "left")
-	.attr("id","SdDAYS")
-	.text("NA")
-d3.select(".summ_row4").append("td")
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "right")
+	.attr("class", "Summ1")
 	.attr("id","Sdtot")
 	.text("NA")
-d3.select(".summ_row4").append("td")
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
 	.attr("id","Sderr")
-	.attr("style", "color:red;")
+	.attr("class", "Summ1")
+	.attr("style", "color:rgba(165,0,38,.4);")
 	.text("NA")
-d3.select(".summ_row4").append("td")
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
+	.attr("class", "Summ1")
 	.attr("id","SddurH")
 	.text("NA")
-d3.select(".summ_row4").append("td")
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
+	.attr("class", "Summ1")
 	.attr("id","Sdfile")
 	.text("NA")
-d3.select(".summ_row4").append("td")
-	.attr("align", "right")
-	.attr("id","SderrDAYS")
-	.attr("style", "color:red;")
-	.text("NA")
-d3.select(".summ_row4").append("td")
+d3.select(".summ_row3_1").append("td")
 	.attr("align", "left")
+	.attr("class", "Summ1")
+	.attr("style", "color:rgba(165,0,38,.4);")
 	.attr("id","SderrM")
-	.attr("style", "color:red;")
 	.text("NA")
+d3.select(".summ_row3_1").append("td")
+	.attr("align", "left")
+	.attr("class", "Summ1")
+	.attr("id","SdDAYS")
+	.text("NA")
+d3.select(".summ_row3_1").append("td")
+	.attr("align", "left")
+	.attr("id","SderrDAYS")
+	.attr("class", "Summ1")
+	.attr("style", "color:rgba(165,0,38,.4);")
+	.text("NA")
+//--Summary Section row 2 --//
+
 	
 //--Summary Section END --//	
 	
@@ -1288,14 +1267,15 @@ function buildSelectData (strDt, StrClass) {
 	}
 	else
 	{
-		d3.selectAll(".label2").style("color" , "rgba(179,179,179,1)");
-		d3.select("#dtot").text("NA");
-		d3.select("#derr").text("NA");
-		d3.select("#dupd").text("NA");
-		d3.select("#dnew").text("NA");
-		d3.select("#ddurH").text("NA");
-		d3.select("#dfile").text("NA");
-		d3.select("#derrM").text("NA");
+		//d3.selectAll(".label2").style("color" , "color:#fff;rgba(179,179,179,1)");
+		d3.selectAll(".label2").style("color" , "#fff");
+		d3.select("#dtot").text("None");
+		d3.select("#derr").text("None");
+		d3.select("#dupd").text("None");
+		d3.select("#dnew").text("None");
+		d3.select("#ddurH").text("None");
+		d3.select("#dfile").text("None");
+		d3.select("#derrM").text("None");
 		
 	}
 	//console.log("selectedDateLast:" + selectedDateLast);
