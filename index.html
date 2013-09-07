@@ -82,7 +82,8 @@ body {
 #summ_row2 {
   //color: rgba(51, 102, 153,.7);
  // color: rgba(51, 102, 153,1);
- color:rgba(179,179,179,1);
+ //color:rgba(179,179,179,1);
+ color:white;
   stroke: red;
   font-size:40px;
 }
@@ -195,9 +196,17 @@ cell-padding: 10;
 <script>
 
 	
-var width = 960,
-    height = 150,
-    cellSize = 17; // cell size
+//console.log(screen.availWidth);
+//console.log(screen.availHeight);
+
+//var width = 960,
+var width = screen.availWidth * 0.7,
+    //height = 150,
+	height = screen.availHeight * .2,
+   // cellSize = 16; // cell size
+   cellSize = width * 0.015; // cell size
+//console.log(width);
+//console.log(cellSize);
 
 var dataOriginal;
 var arrayRange = 12;
@@ -504,27 +513,27 @@ d3.select("#summ_row2").append("td")
 	.attr("id","dupd")
 	.attr("class", "label2")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
-	.text("");
+	.text("00,000,000");
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "right")
 	.attr("class", "label2")
 	.attr("id","dnew")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
-	.text("");
+	.text("00,000,000");
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "right	")
 	.attr("class", "label2")
 	.attr("id","dtot")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
-	.text("");
+	.text("00,000,000");
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","derr")
 	.attr("style","color:rgba(179,179,179,1);")
-	.text("");
+	.text("00,000,000");
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)");
 
 d3.select("#summ_row2").append("td")
@@ -532,20 +541,20 @@ d3.select("#summ_row2").append("td")
 	.attr("class", "label2")
 	.attr("id","ddurH")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
-	.text("");
+	.text("00.00");
 
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","dfile")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1);")
-	.text("")
+	.text("00")
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
 	.attr("class", "label2")
 	.attr("id","demail")
-	.text("");
+	.text("00");
 	
 d3.select("#summ_row2").append("td")
 	.attr("align", "left")
@@ -553,7 +562,7 @@ d3.select("#summ_row2").append("td")
 	.attr("id","derrM")
 	//.attr("style","font-size:20px;color:rgba(179,179,179,1); color:rgba(165,0,38,.4)")
 	.attr("style","color:rgba(179,179,179,1);")
-	.text("")
+	.text("00")
 	//.style("font-size" ,"20px");
 //--SUMARY - WHITE LINE --//
 /*d3.select(".summary").append("tr")
@@ -1065,7 +1074,7 @@ function monthPath(t0) {
 
 function buildLegend () {
 
-//console.log(ScaleArr);	
+console.log(ScaleArr);	
 var legend = d3.select(".legendC")
 .append("svg")
       .attr("class", "legend")
@@ -1074,11 +1083,11 @@ var legend = d3.select(".legendC")
 	  .selectAll("g")
 	  .data(ScaleArr)
     .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(120," + i * 20 + ")"; });
+      .attr("transform", function(d, i) { return "translate(120," + i * 14 + ")"; });
 						
 legend.append("rect")
-      .attr("width", cellSize )
-      .attr("height", cellSize )
+      .attr("width", cellSize *.8 )
+      .attr("height", cellSize *.8 )
 	  .attr("class" , function(d, i){ 
 							var strClass = ""
 							//console.log("color(d) : " + color(d) + " | d: " + d + " | i: " + i); 
@@ -1109,7 +1118,7 @@ legend.append("rect")
 		if (i>0) 
 			{ 
 			//console.log(arrayRange + " | " + i);
-			if (i < (arrayRange-1)) 
+			if (i < (arrayRange+2)) 
 				{ //console.log("if");
 				strLbl =  addCommas(LScaleArr[i]) + " - "+ addCommas(d);
 				}
@@ -1315,14 +1324,14 @@ function buildSelectData (strDt, StrClass) {
 	{
 		//d3.selectAll(".label2").style("color" , "color:#fff;rgba(179,179,179,1)");
 		d3.selectAll(".label2").style("color" , "#fff");
-		d3.select("#dtot").text("None");
-		d3.select("#derr").text("None");
-		d3.select("#dupd").text("None");
-		d3.select("#dnew").text("None");
-		d3.select("#ddurH").text("None");
-		d3.select("#dfile").text("None");
-		d3.select("#derrM").text("None");
-		d3.select("#demail").text("None");
+		d3.select("#dtot").text("00,000,000");
+		d3.select("#derr").text("00,000");
+		d3.select("#dupd").text("00,000,000");
+		d3.select("#dnew").text("00,000,000");
+		d3.select("#ddurH").text("00.00");
+		d3.select("#dfile").text("000");
+		d3.select("#derrM").text("000");
+		d3.select("#demail").text("000");
 		
 	}
 	//console.log("selectedDateLast:" + selectedDateLast);
