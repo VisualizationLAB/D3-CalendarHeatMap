@@ -126,10 +126,10 @@ cell-padding: 10;
 }
 
 .C4{
-   height: 250px;
+   height: 180px;
    //border: 2px solid #F00;
    border: none;
-   width: 1000px;
+   width: 820px;
     //padding: 3px;
     overflow: auto;
 
@@ -221,6 +221,8 @@ var width = screen.availWidth * 0.7,
 //console.log(cellSize);
 
 var borderT = 0;
+var borderT2 = 0;
+var verticalCalendarOffset = 78;
 var cellpadding = 3;
 var cellpaddingD = 0;
 var dataOriginal;
@@ -422,8 +424,8 @@ function mouseOver(Ind) {
 			select_1 = Ind;
 			var newSelecteddate = selectedDate;
 			//console.log("selectedDate -> " + selectedDate + "| newSelecteddate ->" + newSelecteddate);
-			console.log("document.getElementById(select_1).value");
-			console.log(document.getElementById(select_1).textContent);
+			//console.log("document.getElementById(select_1).value");
+			//console.log(document.getElementById(select_1).textContent);
 			//document.getElementById(select_1).style("font-size", "10px")
 			
 			var textVal = document.getElementById(select_1).textContent;
@@ -434,12 +436,12 @@ function mouseOver(Ind) {
 			//selectedDate = buildDataview (d, "");
 			//buildSelectData(selectedDate, "");
 			
-			//console.log("selectedDateLastHERE:" + selectedDateLast);
+			////console.log("selectedDateLastHERE:" + selectedDateLast);
 			
 			document.getElementById(selectedDateLast).focus();
 			
 			d3.selectAll("svg").remove();
-			console.log(select_1)
+			//console.log(select_1)
 			
 			
 			drawCalender(select_1, "1");
@@ -735,7 +737,7 @@ d3.select(".row2")
 // ++++++++ Calendar section
 d3.select(".legendCR")
 	.append("table")
-	.attr("border", 0)
+	.attr("border", borderT2)
 	.append("tr")
 	.attr("class", "C3");
 
@@ -763,7 +765,8 @@ d3.select(".C3")
 d3.select(".C3")
 	.append("td")
 	.attr("class", "C4")
-	.attr("width", "80%")
+	.attr("width", "70%")
+	//.attr("height", 50)
 	.attr("valign" , "top")
 	//.text("I m a little tea pot I m a little tea pot I m a little tea pot");
 	
@@ -890,7 +893,7 @@ var selectedDateD = buildDisplayDate (selectedDate);
 //console.log(selectedDate)
 selectedDateLast = selectedDate;
 document.getElementById(selectedDate).focus();
-buildSelectData(selectedDate, "");
+buildSelectData(selectedDate, "", "");
 /*console.log("document.getElementById(selectedDate).class")
 var selectedClass = document.getElementById(selectedDate).className.baseVal;
 if (selectedClass == "day") 
@@ -973,13 +976,13 @@ return vData;
 // -- calendar building starts --//
 function drawCalender(ind, caller) {
 
-//console.log("BIGDATA-drawCalender");
+////console.log("BIGDATA-drawCalender");
 //console.log(BIGDATA);
-
+d3.selectAll("svgContainer").remove();
 
 var d = new Date();
 //buildDataview (d, "");
-console.log("drawCalender");
+//console.log("drawCalender");
 //console.log(selectedDate);
 var dataBIG = d3.nest()
 			.key(function(d) { return d.Date; })
@@ -1023,16 +1026,21 @@ var color = d3.scale.quantize()
 //console.log(color.domain());
 var svg = d3.select(".C4").selectAll("svg")
 	.data(d3.range(2013, 2014))
-  .enter().append("svg")
-    .attr("width", width)
-    .attr("height", height)
+  .enter().append("tr")
+  .attr("class" , "svgContainer")
+  .append("td")
+  .append("svg")
+    .attr("width", cellSize * 58)
+    .attr("height", 130)
     .attr("class", "RdYlGn")
   .append("g")
     //.attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
 	.attr("transform", "translate(" + ((width - cellSize * 60) / 2) + "," + (height - cellSize * 8 - 1) + ")");
+	//.attr("transform", "translate(" + ((width - cellSize * 60) / 2) + "," + (height - 200) + ")"); //reducing gap between calendars
 
+var yYearLabel = cellSize * 3.5 - verticalCalendarOffset;
 svg.append("text")
-    .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+    .attr("transform", "translate(-6," + yYearLabel + ")rotate(-90)")
     .style("text-anchor", "middle")
     .text(function(d) { return d; });
 	
@@ -1040,6 +1048,8 @@ svg.append("text")
 var rect = svg.selectAll(".day")
     .data(function(d) { 
 	//var dayStr = d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+	//console.log("dayStr");
+	//console.log(dayStr);
 	//var datarow = { day: dayStr , value: 0}
 	//allDays.push(datarow);
 	return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); 
@@ -1051,14 +1061,20 @@ var rect = svg.selectAll(".day")
 	//.attr("id", function(d) { return d;})
     .attr("width", cellSize)
     .attr("height", cellSize)
-    .attr("x", function(d) { return week(d) * cellSize; })
-    .attr("y", function(d) { return day(d) * cellSize; })
 	.on("mouseover", function(d) { 
 		selectedDateLast = d;
+		//console.log("this.name");
+		//console.log(d);
+		//console.log(d.name);
+		//console.log(d);
 		d3.selectAll("rect").classed("active", false)
 		d3.select(this).classed("active", true)
-		buildSelectData(d, "day");
+		buildSelectData(d, "day", this.name);
 	})
+	//.attr("name", function(d) { var dayStr = d3.time.format("%a, %b %d %Y"); return dayStr(d); })
+    .attr("x", function(d) { return week(d) * cellSize; })
+    .attr("y", function(d) { return (day(d) * cellSize)-verticalCalendarOffset; })
+	
 	.on("click", function(){
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
 		
@@ -1098,7 +1114,7 @@ svg.selectAll("text.month")
   .enter().append("text")
     .attr("class", "monthTxt")
     .attr("x", function(d) { return week(d) * cellSize+25; })
-	.attr("y", -5)
+	.attr("y", -4-verticalCalendarOffset)
 	.attr("transform", "translate(0,0)")
     .attr("style", "text-anchor:left;")
     .text(month_name);
@@ -1140,7 +1156,7 @@ rect.filter(function(d) { return d in dataBIG; })
 				//console.log("day " + color(dataBIG[d]));
 			var strClass = "day " + color(dataBIG[d]);
 			}	
-		buildSelectData (d,strClass);
+		buildSelectData (d,strClass, this.name);
 	} )
 	.on("click", function(){	
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
@@ -1178,16 +1194,25 @@ function monthPath(t0) {
   var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
       d0 = +day(t0), w0 = +week(t0),
       d1 = +day(t1), w1 = +week(t1);
-  return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
-      + "H" + w0 * cellSize + "V" + 7 * cellSize
-      + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
-      + "H" + (w1 + 1) * cellSize + "V" + 0
+	  //console.log("typeof(d0)");
+	  //console.log(typeof(d0 * cellSize));
+	  //console.log(d0 * cellSize-verticalCalendarOffset);
+
+	  var val1 = d0 * cellSize - verticalCalendarOffset;
+	  var val2 = 7 * cellSize - verticalCalendarOffset;
+	  var val3 = (d1 + 1) * cellSize - verticalCalendarOffset;
+	  var val4 = 0 - verticalCalendarOffset;
+	  
+  return "M" + (w0 + 1) * cellSize + "," + val1
+      + "H" + w0 * cellSize + "V" + val2
+      + "H" + w1 * cellSize + "V" + val3
+      + "H" + (w1 + 1) * cellSize + "V" + val4
       + "H" + (w0 + 1) * cellSize + "Z";
 }
 
 function buildLegend () {
 
-console.log(ScaleArr);	
+//console.log(ScaleArr);	
 var legend = d3.select(".legendC")
 .append("svg")
       .attr("class", "legend")
@@ -1264,6 +1289,8 @@ var d = strDate;
 if (d.getDate().toString().length == 1)  var curr_date = "0"+d.getDate();
 else var curr_date = d.getDate();
 
+//var getDayStr = d.getDay();
+
 var DCurrMonth = "";
 if (Ind == "Display") { 
 	DCurrMonth = monthNames[d.getMonth()];
@@ -1280,7 +1307,7 @@ else
 	}
 }
 
-	
+
 var curr_year = d.getFullYear();
 var strDateX = "";
 selectedDate = curr_year + "-" + curr_month + "-" + curr_date;
@@ -1298,6 +1325,18 @@ function buildDisplayDate (strDate) {
 
 var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+var weekNames = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+var dayStr = d3.time.format("%a, %b %d %Y");
+var newD = new Date(strDate);
+
+//console.log("dayStr(strDate)");
+//console.log(dayStr(strDate));
+//console.log("strDate.getDay()");
+//console.log(newD.getDay());
+var currWeekDay = weekNames[newD.getDay()];
+//console.log(currWeekDay);
 var arrDate = strDate.split("-");
 
 if (arrDate[1].substring(0,1) != "0") 
@@ -1314,17 +1353,21 @@ else
 	//console.log(arrDate[1].substring(0,1) );
 	var currmonth = monthNames[Number(arrDate[1].substring(1,2))-1];
 }
-strDateX  = currmonth + " " + arrDate[2] + " " + arrDate[0];
+strDateX  = currWeekDay + ", " + currmonth + " " + arrDate[2] + " " + arrDate[0];
 
 return strDateX;
 }
 
-function buildSelectData (strDt, StrClass) {
+function buildSelectData (strDt, StrClass, dtNm) {
 	SelectedData = [];
 	//console.log("StrClass:" + StrClass)
 	//var strDate = "#"+strDt;
 	//console.log("StrClass:" + StrClass + "|strDate:"+strDate)
 	//d3.select(strDate).style("stroke:red;");
+	
+	//console.log("dtNm");
+	//console.log(dtNm);
+	
 	
 	var displayDt = buildDisplayDate(strDt);
 	//if (origDt !="") 
@@ -1521,13 +1564,13 @@ var fileList = "";
 	if (SelectedData.length > 0 ) 
 	{
 		SelectedData.forEach (function (d) {
-		//console.log(d.Files);
-		//console.log(d.Errors);
-		console.log(d.Errors_cnt);
+		////console.log(d.Files);
+		////console.log(d.Errors);
+		//console.log(d.Errors_cnt);
 		//dataTB = d.Errors_cnt;
 		d.Errors_cnt.forEach ( function(d) {
 		var arrStr = d.split("-");
-		//console.arrStr;
+		////console.arrStr;
 		if(arrStr[0] != "") 
 		{	
 			var datarow = { "Error" : arrStr[0] , "Count" : parseInt(arrStr[1]) }
@@ -1539,7 +1582,7 @@ var fileList = "";
 		
 		var fileClass = "";
 				var val = d.substring(0,3);
-				console.log("val: " + val);
+				//console.log("val: " + val);
 				switch (val)
 				{
 					case "eli":
@@ -1566,11 +1609,11 @@ var fileList = "";
 		dataFile.push(datarow);
 		
 		
-		console.log("fileList");
-		console.log(fileList);
+		//console.log("fileList");
+		//console.log(fileList);
 		if (fileList.indexOf(fileClass) == -1) {
-			console.log("fileList.indexOf(d) == -1");
-			console.log(d);
+			//console.log("fileList.indexOf(d) == -1");
+			//console.log(d);
 			var datarow = { "Category" : fileClass } 
 			fileList = fileList + fileClass + "|";
 			File.push(datarow);
@@ -1579,8 +1622,8 @@ var fileList = "";
 		});
 		
 	})}
-console.log("dataFile");
-console.log(dataFile);
+//console.log("dataFile");
+//console.log(dataFile);
 
 
 if(dataTB.length > 0)
