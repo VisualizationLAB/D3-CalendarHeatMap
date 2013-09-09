@@ -30,11 +30,12 @@ body {
   //stroke: #000;
   stroke: #fff;
   stroke-width: 4px;
-  
+  -webkit-font-smoothing: subpixel-antialiased;
   font: 10px sans-serif;
 }
 .H1 {
    font-size: 15px;
+   -webkit-font-smoothing: subpixel-antialiased;
    padding: 10px;
   // color: rgba(102, 102, 102,1); 
   color: rgba(51, 102, 153,.5);
@@ -47,6 +48,7 @@ body {
   color:rgba(179,179,179,1);
   stroke: red;
   font-size:10px;
+  -webkit-font-smoothing: subpixel-antialiased;
   //font-weight:bold;
 }
 
@@ -60,6 +62,7 @@ body {
 }
 .label1.active {
   font-size:15px;
+  -webkit-font-smoothing: subpixel-antialiased;
  //color:rgba(0,104,55,.3); 
  color: rgba(51, 102, 153,1);
 }
@@ -69,6 +72,7 @@ body {
   //color: rgba(51, 102, 153,1);
   color: blue;
   stroke: red;
+  -webkit-font-smoothing: subpixel-antialiased;
   font-size:14px;
   font-weight:bold;
 }
@@ -76,6 +80,7 @@ body {
   //color: rgba(153, 153, 153,.7);
   color: rgba(179,179,179,0.7);
   stroke: red;
+  -webkit-font-smoothing: subpixel-antialiased;
   font-size:14px;
   font-weight:bold;
 }
@@ -85,21 +90,24 @@ body {
  //color:rgba(179,179,179,1);
  color:white;
   stroke: red;
+  -webkit-font-smoothing: subpixel-antialiased;
   font-size:40px;
 }
 .label2 {
 	color:rgba(179,179,179,1);
 	font-size:25px;
+	-webkit-font-smoothing: subpixel-antialiased;
 }
 .summ_row4 {
   //color: rgba(51, 102, 153,.7);
   color: rgba(51, 102, 153,1);
   stroke: red;
   font-size:20px;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 #summ_Line {
-	cellpadding: 10px;
+	//cellpadding: 10px;
 	font-size:20px;
 }
 table.control_2:hover {
@@ -114,6 +122,7 @@ cell-padding: 10;
   //color: rgba(51, 102, 153,.7);
   color: rgba(51, 102, 153,1);
   font-size:40px;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .C4{
@@ -128,6 +137,9 @@ cell-padding: 10;
     position:fixed;
 }
 
+.rect.text {
+font-size: 4px;
+}
 
 
 .q10-11{fill:rgba(0,104,55,1)}
@@ -208,6 +220,9 @@ var width = screen.availWidth * 0.7,
 //console.log(width);
 //console.log(cellSize);
 
+var borderT = 0;
+var cellpadding = 3;
+var cellpaddingD = 0;
 var dataOriginal;
 var arrayRange = 12;
 var domainMax = 20000000;
@@ -221,6 +236,8 @@ var selectedDate = ""
 var selectedDateLast = ""
 var lastClicked;
 var lastSelectedLabel;
+
+var allDays = [];
 //var lastClicked;
 
 var SummaryData = [];
@@ -239,8 +256,8 @@ var mainTable = d3.select("body")
 		.append("table")
 		.attr("class" , "main")
 		.attr("id" , "main")
-		.attr("border", 0)
-		.attr("cellpadding", 10)
+		.attr("border", borderT)
+		.attr("cellpadding", cellpadding)
 		.attr("width", "100%")
 		.attr("height", "100%");
 		
@@ -289,12 +306,14 @@ d3.select(".detailsR").append("td")
 	.attr("class","sub_titleL")
 	.attr("id","sub_titleL")
 	.attr("align", "right")
+	.attr("valign", "bottom")
 	.text("CALENDAR HEAT MAP FOR");
 	
 d3.select(".detailsR").append("td")
 	.attr("class","sub_title")
 	.attr("id","sub_title")
 	.attr("align", "left")
+	.attr("valign", "bottom")
 	.text(strSelectID);
 	
 mainTable.append("tr")
@@ -308,11 +327,62 @@ mainTable.append("tr")
 mainTable.append("tr")
 	.attr("class", "details")
 	.append("td")
-	.attr("class","sub_titleL")
-	.attr("id","sub_titleL")
 	.attr("align", "center")
-	//.text( function(d) {return "SUMMARY" });
+	.append("table")
+	.attr("border", borderT)
+	.attr("class","detailsT")
+	.attr("width", "100%");
+//// _________drawing the DETAILS SECTION__________________________//
+
+/*d3.select(".detailsT")
+	.append("tr")
+	.attr("class" , "radioOptions")
+	.append("td")
+	.text("detail")
+	.append("input")
+	.attr("type" , "radio")
+	.attr("name" , "detail")
+	.attr("value" , "detail1")
+	;
 	
+d3.select(".radioOptions")
+	.append("td")
+	.text("chart")
+	.append("input")
+	.attr("type" , "radio")
+	.attr("name" , "chart")
+	.attr("value" , "chart1");
+
+d3.select(".radioOptions")
+	.append("td")
+	.text("line")
+	.append("input")
+	.attr("type" , "radio")
+	.attr("name" , "trend")
+	.attr("value" , "chart2");*/
+	
+d3.select(".detailsT")
+	.append("tr")
+	.append("td")
+	.attr("colspan", 3)
+	.attr("class" , "theatre")
+	//.text("let the show begin");
+	
+
+			
+/* // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; });*/
+			
+
+		
+  
+	
+//// _________drawing the DETAILS SECTION__________________________//
 mainTable.append("tr")
 	.attr("class", "control_2");
 
@@ -325,7 +395,7 @@ d3.select(".control_1").append("td")
 	.attr("class", "summary")
 	.attr("width", "100%")
 	.attr("border", 0)
-	.attr("cellpadding", 5)
+	.attr("cellpadding", cellpadding)
 	.append("tr")
 	.attr("class","summ_row1")
 	.attr("id","summ_row1")
@@ -669,7 +739,7 @@ d3.select(".legendCR")
 	.append("tr")
 	.attr("class", "C3");
 
-d3.select(".C3")
+/*d3.select(".C3")
 	.append("td")
 	//.attr("class", "C4")
 	.attr("valign" , "top")
@@ -680,7 +750,7 @@ d3.select(".C3")
 	//.attr("class", "C4")
 	.attr("valign" , "top")
 	.style("color" , "white")
-	.text("I m a little tea pot");
+	.text("I m a little tea pot");*/
 	
 d3.select(".C3")	
 	.append("td")
@@ -954,8 +1024,8 @@ var color = d3.scale.quantize()
 var svg = d3.select(".C4").selectAll("svg")
 	.data(d3.range(2013, 2014))
   .enter().append("svg")
-    .attr("width", width * .9)
-    .attr("height", height * .9)
+    .attr("width", width)
+    .attr("height", height)
     .attr("class", "RdYlGn")
   .append("g")
     //.attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
@@ -968,11 +1038,17 @@ svg.append("text")
 	
 
 var rect = svg.selectAll(".day")
-    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+    .data(function(d) { 
+	//var dayStr = d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+	//var datarow = { day: dayStr , value: 0}
+	//allDays.push(datarow);
+	return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); 
+	
+	})
 	.enter()
 	.append("rect")
     .attr("class", "day")
-	.attr("id", function(d) { return d;})
+	//.attr("id", function(d) { return d;})
     .attr("width", cellSize)
     .attr("height", cellSize)
     .attr("x", function(d) { return week(d) * cellSize; })
@@ -996,7 +1072,13 @@ var rect = svg.selectAll(".day")
 		d3.select(lastClicked).style("outline-style", "dotted"); 
 		d3.select(lastClicked).style("outline-color", "red"); 
 	})
-	.attr("id", function(d) { var strDate = buildDataview(d, ""); return strDate;})
+	.attr("id", function(d) { var strDate = buildDataview(d, ""); 
+	
+		//console.log(strDate);
+		var datarow = {day: strDate}
+		allDays.push(datarow);
+	
+	return strDate;})
     .datum(format);
 	
 rect.append("title")
@@ -1114,7 +1196,7 @@ var legend = d3.select(".legendC")
 	  .selectAll("g")
 	  .data(ScaleArr)
     .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(120," + i * 14 + ")"; });
+      .attr("transform", function(d, i) { return "translate(120," + i * 13 + ")"; });
 						
 legend.append("rect")
       .attr("width", cellSize *.8 )
@@ -1142,6 +1224,7 @@ legend.append("rect")
       .attr("y", 9)
       .attr("dy", ".35em")
 	  .attr("text-anchor", "end")
+	  .attr("style" , "font-size: 9px;")
       .text(function(d,i) { 
 		//console.log(d);
 		//LScaleArr[i]
@@ -1256,8 +1339,11 @@ function buildSelectData (strDt, StrClass) {
 	//console.log(StrClass);
 	var strFile = "";
 	var strFileErr = "";
+	
+	var strFileErrCnt = "";
 
 	var errMsgs = [];
+	var errMsgsCnt = []
 	var fileLayout = [];
 	
 	BIGDATA.forEach(function (d) {
@@ -1282,6 +1368,7 @@ function buildSelectData (strDt, StrClass) {
 				if (strFileErr.indexOf(strCurrErr[i]) == -1 && (i%2 == 0) ) 
 					{
 						strFileErr = strFileErr + strCurrErr[i] + "|";
+						strFileErrCnt = strFileErrCnt + strCurrErr[i] + "-" + strCurrErr[i+1] + "|";
 					}
 				}
 			}
@@ -1292,6 +1379,14 @@ function buildSelectData (strDt, StrClass) {
 				if (d != "") errMsgs.push(d);
 					})
 				}
+				
+			if (typeof(strFileErrCnt) == "string") {
+				var arrErrCnt = strFileErrCnt.split("|");
+				arrErrCnt.forEach( function(d) {
+				if (d != "") errMsgsCnt.push(d);
+					})
+				}
+				
 			if (typeof(strFile) == "string") {
 				var arrFileLayout = strFile.split("|");
 				arrFileLayout.forEach( function(d) {
@@ -1310,6 +1405,7 @@ function buildSelectData (strDt, StrClass) {
 						"Error_Msgs" : errMsgs.length,
 						"Files" : fileLayout,
 						"Errors" : errMsgs,
+						"Errors_cnt" : arrErrCnt,
 						"tot_emails" : parseInt(d.tot_emails),
 						"tot_unique_emails" : parseInt(d.tot_unique_emails)
 						
@@ -1370,6 +1466,272 @@ function buildSelectData (strDt, StrClass) {
 	//var idSelect = "#"+selectedDateLast;
 	//document.getElementById(selectedDateLast).attr("style", "stroke:red");
 	//d3.select("#dtot").text( function(d) {SelectedData[0].Tot_Records;});
+	
+	buildDataTable();
+	LineChartData();
+}
+function LineChartData(){
+
+console.log("allDays");
+console.log(allDays);
+var DateArr = d3.nest()
+			.key(function(d) { return d.day; })
+			.rollup(function(d) {return 0;})
+			.map(allDays);
+console.log(DateArr);	
+}
+function buildDataTable()
+{
+
+ d3.select(".theatre").selectAll(".stage").remove();
+ 
+ d3.select(".theatre")
+  .append("div")
+  .attr("class" ,"stage")
+  .append("table")
+  .attr("border" , borderT)
+  .attr("cellpadding" , cellpaddingD)
+  .append("tr")
+  .attr("class" , "dataFile_err")
+  .append("td")
+  .attr("class", "fileList")
+  .attr("valign", "top")
+  .attr("align", "right");
+
+ d3.select(".dataFile_err")
+	.append("td")
+    .attr("class", "fileData")
+	.attr("valign", "top")
+	.attr("align", "right");
+d3.select(".dataFile_err")
+	.append("td")
+    .attr("class", "errData")
+	.attr("valign", "top")
+	.attr("align", "right");
+ 
+		// the columns you'd like to display
+ var columns = ["Error", "Count"];
+ var columnsFile = ["Layouts"];
+ var columnsFileLayout = ["Category"];
+ var dataTB = [];
+ var dataFile = [];
+ var File = [];
+	//var columns = ["Files"];
+var fileList = "";
+	if (SelectedData.length > 0 ) 
+	{
+		SelectedData.forEach (function (d) {
+		//console.log(d.Files);
+		//console.log(d.Errors);
+		console.log(d.Errors_cnt);
+		//dataTB = d.Errors_cnt;
+		d.Errors_cnt.forEach ( function(d) {
+		var arrStr = d.split("-");
+		//console.arrStr;
+		if(arrStr[0] != "") 
+		{	
+			var datarow = { "Error" : arrStr[0] , "Count" : parseInt(arrStr[1]) }
+			dataTB.push(datarow);}
+		});
+		
+		
+		d.Files.forEach ( function(d) {
+		
+		var fileClass = "";
+				var val = d.substring(0,3);
+				console.log("val: " + val);
+				switch (val)
+				{
+					case "eli":
+						fileClass = "Eligibility"
+						break;
+					case "pro":
+						fileClass = "Provider"
+						break;
+					case "ceg":
+						fileClass = "CEG"
+						break;
+					case "lab":
+						fileClass = "LAB"
+						break;
+					case "PHA":
+						fileClass = "Pharmacy Claims"
+						break;
+					case "CLA":
+						fileClass = "Medical Claims"
+						break;
+				}
+				
+		var datarow = { "Layouts" : d , "Fclass" : fileClass } 
+		dataFile.push(datarow);
+		
+		
+		console.log("fileList");
+		console.log(fileList);
+		if (fileList.indexOf(fileClass) == -1) {
+			console.log("fileList.indexOf(d) == -1");
+			console.log(d);
+			var datarow = { "Category" : fileClass } 
+			fileList = fileList + fileClass + "|";
+			File.push(datarow);
+			}
+		
+		});
+		
+	})}
+console.log("dataFile");
+console.log(dataFile);
+
+
+if(dataTB.length > 0)
+{
+ d3.select(".errData")
+  .append("table")
+  .attr("border", borderT)
+  .attr("cellpadding" , cellpaddingD)
+  .attr("class", "dataTable")
+  .append("thead")
+  .append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; })
+			.attr("align", "right");
+ 
+var tbody  = d3.select(".dataTable")
+  .append("tbody");
+  
+ var rows = tbody.selectAll("tr")
+        .data(dataTB)
+        .enter()
+        .append("tr");
+	
+var cells = rows.selectAll("td")
+        .data(function(row) {
+            //console.log(row.error);
+			return columns.map(function(column) {
+                //console.log("column: " + column);
+				//var dataRow = {column: column, value: row[column]};
+				var dataRow = {column: column, value: addCommas(row[column])};
+				//console.log(dataRow);
+				//return {column: column, value: row[column]};
+				return dataRow;
+            });
+			})
+        .enter()
+        .append("td")
+            .text(function(d) { return d.value; })
+			.attr("align", "right");
+	}
+if(dataFile.length > 0)
+{
+ d3.select(".fileData")
+  .append("table")
+  .attr("border", borderT)
+  .attr("cellpadding" , cellpaddingD)
+  .attr("class", "fileTable")
+  .append("thead")
+  .append("tr")
+        .selectAll("th")
+        .data(columnsFile)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; })
+			.attr("align", "left");
+ 
+var tbody  = d3.select(".fileTable")
+  .append("tbody");
+  
+ var rows = tbody.selectAll("tr")
+        .data(dataFile)
+        .enter()
+        .append("tr");
+	
+var cells = rows.selectAll("td")
+        .data(function(row) {
+            //console.log(row.error);
+			return columnsFile.map(function(column) {
+                //console.log("column: " + column);
+				//var dataRow = {column: column, value: row[column]};
+				var fileClass = "";
+				var val = row[column].substring(0,3);
+				//console.log("val: " + val);
+				switch (val)
+				{
+					case "eli":
+						fileClass = "Eligibility"
+						break;
+					case "pro":
+						fileClass = "Provider"
+						break;
+					case "ceg":
+						fileClass = "CEG"
+						break;
+					case "lab":
+						fileClass = "LAB"
+						break;
+					case "PHA":
+						fileClass = "Pharmacy Claims"
+						break;
+					case "CLA":
+						fileClass = "Medical Claims"
+						break;
+				}
+				var dataRow = {column: column, value: row[column], Fclass: fileClass};
+				//console.log(dataRow);
+				//return {column: column, value: row[column]};
+				return dataRow;
+            });
+			})
+        .enter()
+        .append("td")
+            .text(function(d) { return d.value; });
+			
+	//console.log("File")
+	//console.log(File)
+
+d3.select(".fileList")
+  .append("table")
+  .attr("border", borderT)
+  .attr("cellpadding" , cellpaddingD)
+  .attr("class", "fileLTable")
+  .append("thead")
+  .append("tr")
+        .selectAll("th")
+        .data(columnsFileLayout)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; })
+			.attr("align", "left");
+ 
+var tbody  = d3.select(".fileLTable")
+  .append("tbody");
+  
+ var rows = tbody.selectAll("tr")
+        .data(File)
+        .enter()
+        .append("tr");
+	
+var cells = rows.selectAll("td")
+        .data(function(row) {
+            //console.log(row.error);
+			return columnsFileLayout.map(function(column) {
+                //console.log("column: " + column);
+				//var dataRow = {column: column, value: row[column]};
+				var dataRow = {column: column, value: row[column]};
+				//console.log(dataRow);
+				//return {column: column, value: row[column]};
+				return dataRow;
+					});
+			})
+        .enter()
+        .append("td")
+            .text(function(d) { return d.value; })
+			.attr("align", "right");
+	}
+
+ 
 }
 function buildSummaryData () {
 	
