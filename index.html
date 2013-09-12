@@ -24,9 +24,10 @@ body {
 
 .bar {
   //fill: orange;
-  fill: rgba(179,179,179,0.5);
+  //fill: rgba(179,179,179,0.5);
   //fill: rgba(51, 102, 153,.5)
-  //fill: blue;
+  //fill: aliceblue;
+  fill: rgba(0,0,255,0.9)
 }
 
 .bar:hover {
@@ -201,6 +202,11 @@ cell-padding: 10;
 font-size: 4px;
 }
 
+.q11-11{fill:rgba(0,104,55,1)}
+.qE11-11{fill:rgba(0,104,55,1)}
+
+.q11-11.active {outline-width:1px;	outline-style:solid;outline-color:black;}
+.qE11-11.active {outline-width:1px;	outline-style:solid;outline-color:black;}
 
 .q10-11{fill:rgba(0,104,55,1)}
 .q9-11{fill:rgba(0,104,55,.9)}
@@ -282,12 +288,24 @@ widthC4 = cellSize * 60;
 
 var widthCalendar = cellSize * 58;
 var heightCalendar = cellSize * 10;
-var verticalCalendarOffset = heightCalendar * .5;
+//var verticalCalendarOffset = heightCalendar * .1;
+if (screen.availWidth > 1280) { 
+console.log("here");
+	var verticalCalendarOffset = 20;
+}
+else 
+{
+	console.log("here2");
+	var verticalCalendarOffset = 70;
+}
+console.log(screen.availWidth);
+console.log(screen.availHeight);
+
 var horizontalCalendarOffset = widthCalendar * .1;
 var calendarStart = 2013;
 var calendarEnd = 2014;
 
-var cellpadding = 3;
+var cellpadding = 2;
 var cellpaddingD = 0;
 
 var borderT = 0;
@@ -405,7 +423,9 @@ d3.select(".detailsR").append("td")
 	.text(strSelectID);
 	
 mainTable.append("tr")
-	.attr("class", "legendCR");
+	.append("td")
+	.attr("class", "legendCR")
+	.attr("valign", "bottom");
 
 /*mainTable.append("tr")
 	.attr("class", "details")
@@ -860,6 +880,7 @@ d3.select(".row2")
 // ++++++++ Calendar section
 d3.select(".legendCR")
 	.append("table")
+	.attr("cellpadding", cellpaddingD)
 	.attr("border", borderT2)
 	.append("tr")
 	.attr("class", "C3");
@@ -880,7 +901,8 @@ d3.select(".C3")
 d3.select(".C3")	
 	.append("td")
 	.attr("class", "legendC")
-	.attr("align", "center");
+	.attr("align", "center")
+	.attr("valign", "bottom");
 	//.attr("width", "100%");
 	
 	
@@ -888,11 +910,12 @@ d3.select(".C3")
 d3.select(".C3")
 	.append("td")
 	.attr("align" , "left")
+	.attr("valign" , "bottom")
 	.attr("class", "C4")
 	.attr("width", widthC4)
 	.attr("height", heightC4)
 	//.attr("height", 50)
-	.attr("valign" , "top")
+	//.attr("valign" , "top")
 	//.text("I m a little tea pot I m a little tea pot I m a little tea pot");
 	
 
@@ -1197,12 +1220,39 @@ var rect = svg.selectAll(".day")
 		//console.log(d);
 		d3.selectAll("rect").classed("active", false)
 		d3.select(this).classed("active", true)
+		var ClassNameSelected = this.className.baseVal;
+		if (ClassNameSelected == "day" || ClassNameSelected == "day active") ClassNameSelected = ClassNameSelected.replace(" active", "");
+		//console.log(ClassNameSelected);
+		
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			if(objLegend_g[i].children[0].id == ClassNameSelected) {
+			//console.log(objLegend_g[i].children[0].id)
+			objLegend_g[i].children[0].style.outline = "solid";
+			objLegend_g[i].children[0].style.outlineColor  = "red";
+			objLegend_g[i].children[0].style.outlineWidth = "1px";
+			}
+		}
+		
 		buildSelectData(d, "day", this.name);
 	})
 	//.attr("name", function(d) { var dayStr = d3.time.format("%a, %b %d %Y"); return dayStr(d); })
     .attr("x", function(d) { return week(d) * cellSize-horizontalCalendarOffset; })
     .attr("y", function(d) { return (day(d) * cellSize)-verticalCalendarOffset; })
+	.on("mouseout", function(d) {
+		
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			objLegend_g[i].children[0].style.outline = "";
+			objLegend_g[i].children[0].style.outlineColor  = "";
+			objLegend_g[i].children[0].style.outlineWidth = "";
+		}
 	
+	})
 	.on("click", function(){
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
 		
@@ -1304,8 +1354,32 @@ rect.filter(function(d) { return d in dataBIG; })
 				//console.log(objBarChart_g_children[i].style.outlineColor);
 				//console.log(objBarChart_g_children[i].style.outlineWidth);
 				objBarChart_g_children[i].style.fill = "red";
+				
+				
+				
 			 }
 			}
+		
+		var ClassNameSelected = this.className.baseVal;
+		//console.log(ClassNameSelected);
+		if (ClassNameSelected == "day" || ClassNameSelected == "day active") ClassNameSelected = ClassNameSelected.replace(" active", "");
+		else {
+			ClassNameSelected = ClassNameSelected.replace("day ", "");
+			ClassNameSelected = ClassNameSelected.replace(" active", ""); }
+		//console.log("ClassNameSelected");
+		//console.log(ClassNameSelected);
+		//console.log(d3.select(".RdYlGn").selectAll(".rect")[0]); 
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			if(objLegend_g[i].children[0].id == ClassNameSelected) {
+			//console.log(objLegend_g[i].children[0].id)
+			objLegend_g[i].children[0].style.outline = "solid";
+			objLegend_g[i].children[0].style.outlineColor  = "red";
+			objLegend_g[i].children[0].style.outlineWidth = "1px";
+			}
+		}
 		
 		
 		buildSelectData (d,strClass, this.name);
@@ -1316,9 +1390,28 @@ rect.filter(function(d) { return d in dataBIG; })
 		var objBarChart_g_children = objBarChart_g[0].children;
 		for(var i =0; i < objBarChart_g_children.length; i++ ) {
 			if (objBarChart_g_children[i].id == d) {
-				objBarChart_g_children[i].style.fill = "rgba(179,179,179,0.5)";
+				objBarChart_g_children[i].style.fill = "rgba(0,0,255,0.9)";
 			 }
 			}
+			
+		//var ClassNameSelected = this.className.baseVal;
+		//ClassNameSelected = ClassNameSelected.replace("day ", "");
+		//ClassNameSelected = ClassNameSelected.replace(" active", "");
+		//console.log(ClassNameSelected);
+		
+		//console.log(d3.select(".RdYlGn").selectAll(".rect")[0]); 
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			//if(objLegend_g[i].children[0].id == ClassNameSelected) {
+			//console.log(objLegend_g[i].children[0].id)
+			objLegend_g[i].children[0].style.outline = "";
+			objLegend_g[i].children[0].style.outlineColor  = "";
+			objLegend_g[i].children[0].style.outlineWidth = "";
+			//}
+		}
+		
 	})
 	.on("click", function(){	
 		if (caller == "0") try { d3.select(lastClicked).style("outline-style", "none"); } catch(err){}
@@ -1392,11 +1485,11 @@ var legend = d3.select(".legendC")
       .attr("class", "legend")
 	  .attr("width", widthBarChart)
 	  //.attr("height",heightCalendar)
-      .attr("height", (cellSize * arrayRange) + 2 * cellSize)
+      .attr("height", (cellSize * arrayRange) + 2 * cellSize )
 	  .selectAll("g")
 	  .data(ScaleArr)
     .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(120," + i * 13 + ")"; });
+      .attr("transform", function(d, i) { return "translate(120," + parseInt((i * 13) +3) +")"; });
 						
 legend.append("rect")
       .attr("width", cellSize *.8 )
@@ -2223,29 +2316,53 @@ var objCalendar_g_children = objCalendar_g[0].children;
       .attr("height", function(d) { return height - y(d.Cnt); })
 	  .on('mouseover', function(d) {
 	  
+		this.style.fill = "red";
 		for(var i =0; i < objCalendar_g_children.length; i++ ) {
 				objCalendar_g_children[i].style.outline = "";
 				objCalendar_g_children[i].style.outlineColor  = "";
 				objCalendar_g_children[i].style.outlineWidth = "";
 			}
-
+		var ClassNameSelected;
+		
 		for(var i =0; i < objCalendar_g_children.length; i++ ) {
 			if (objCalendar_g_children[i].id == buildDataview(d.date, "")) {
-				console.log(objCalendar_g_children[i].id);
-				console.log(objCalendar_g_children[i]);
-				console.log(objCalendar_g_children[i].style); 
-				console.log(objCalendar_g_children[i].style.outline); 
-				console.log(objCalendar_g_children[i].style.outlineColor);
-				console.log(objCalendar_g_children[i].style.outlineWidth);
+				//console.log(objCalendar_g_children[i].id);
+				//console.log(objCalendar_g_children[i].className.baseVal);
+				//console.log(objCalendar_g_children[i].style); 
+				//console.log(objCalendar_g_children[i].style.outline); 
+				//console.log(objCalendar_g_children[i].style.outlineColor);
+				//console.log(objCalendar_g_children[i].style.outlineWidth);
 				objCalendar_g_children[i].style.outline = "solid";
 				objCalendar_g_children[i].style.outlineColor  = "red";
 				objCalendar_g_children[i].style.outlineWidth = "1px";
+				ClassNameSelected = objCalendar_g_children[i].className.baseVal;
+				ClassNameSelected = ClassNameSelected.replace("day ", "");
+				//console.log(ClassNameSelected);
+				
 			 }
 			}
+			
+		
+		//console.log(d3.select(".RdYlGn").selectAll(".rect")[0]); 
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			if(objLegend_g[i].children[0].id == ClassNameSelected) {
+			console.log(objLegend_g[i].children[0].id)
+			objLegend_g[i].children[0].style.outline = "solid";
+			objLegend_g[i].children[0].style.outlineColor  = "red";
+			objLegend_g[i].children[0].style.outlineWidth = "1px";
+			}
+		}
+		
+		//var objLegend_g_children = objLegend_g[0].children;
+		//console.log(objLegend_g_children[0].style); 
 			
 		buildSelectData(buildDataview (d.date, ""),"","");})
    .on('mouseout', function(d){
 	  
+		this.style.fill = "rgba(0,0,255,0.9)";
 		for(var i =0; i < objCalendar_g_children.length; i++ ) {
 			if (objCalendar_g_children[i].id == buildDataview(d.date, "")) {
 				objCalendar_g_children[i].style.outline = "";
@@ -2253,6 +2370,20 @@ var objCalendar_g_children = objCalendar_g[0].children;
 				objCalendar_g_children[i].style.outlineWidth = "";
 			 }
 			}
+			
+		//console.log(d3.select(".RdYlGn").selectAll(".rect")[0]); 
+		var objLegend = d3.select(".legend").selectAll(".rect")[0].parentNode;
+		var objLegend_g = objLegend.children;
+		//console.log(objLegend_g); 
+		for(var i =0; i < objLegend_g.length; i++ ) {
+			//if(objLegend_g[i].children[0].id == ClassNameSelected) {
+			//console.log(objLegend_g[i].children[0].id)
+			objLegend_g[i].children[0].style.outline = "";
+			objLegend_g[i].children[0].style.outlineColor  = "";
+			objLegend_g[i].children[0].style.outlineWidth = "";
+			//}
+		}
+		
 		})
 		
 rect.append("title")
